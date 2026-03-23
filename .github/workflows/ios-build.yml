@@ -1,6 +1,6 @@
 name: Build iOS IPA
 on:
-  workflow_dispatch: # Manuel başlatma butonu
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20 # Sürümü 20 yaptık
           cache: 'npm'
 
       - name: Setup EAS
@@ -23,6 +23,8 @@ jobs:
 
       - name: Build Local IPA
         run: npx eas-cli build --platform ios --local --profile preview --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }} # Gizli anahtarını burada kullandık
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
