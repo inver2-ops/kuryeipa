@@ -1,31 +1,17 @@
-name: Build iOS IPA
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Setup EAS
-        run: npm install -g eas-cli
-
-      - name: Fix and Install
-        run: |
-          rm -rf node_modules
-          rm -f package-lock.json
-          npm install --legacy-peer-deps
-
-      - name: Build Local IPA
-        # EAS'ın npm ci yapmasını engellemek için ortam değişkeni ekledik
+- name: Build Local IPA
         run: npx eas-cli build --platform ios --local --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NPM_CONFIG_LEGACY_PEER_DEPS: true
+
+      # Build edilen dosyayı bulup ana dizine taşıyoruz ki GitHub görebilsin
+      - name: Locate and Move App
+        run: |
+          mkdir -p output
+          find . -name "*.app" -exec cp -R {} output/ \;
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-app-ipa
+          path: output/*.app
