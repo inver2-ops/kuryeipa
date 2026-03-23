@@ -30,14 +30,6 @@
       "ios": {
         "distribution": "store"
       }
-    },
-    "apk": {
-      "distribution": "internal",
-      "channel": "production",
-      "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
-      }
     }
   },
   "submit": {
