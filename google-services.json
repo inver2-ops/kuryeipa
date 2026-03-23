@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "341954432144",
+    "project_id": "inver-2",
+    "storage_bucket": "inver-2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341954432144:android:37f6dcfa6ec046890a1c15",
+        "android_client_info": {
+          "package_name": "com.inver.courier"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTyOKsau6B78FA4dpXk4IxiaeBDKTtHxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341954432144:android:9dfea669ab5527cb0a1c15",
+        "android_client_info": {
+          "package_name": "com.inver.water"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTyOKsau6B78FA4dpXk4IxiaeBDKTtHxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

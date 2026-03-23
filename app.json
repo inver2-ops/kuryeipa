@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "INVER Kurye",
+    "slug": "inver-courier",
+    "version": "1.1.2",
+    "orientation": "portrait",
+    "scheme": "inver-courier",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A7EC8"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.inver.courier"
+    },
+    "android": {
+      "package": "com.inver.courier",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0A7EC8"
+      },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.VIBRATE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.FOREGROUND_SERVICE_LOCATION"
+      ],
+      "versionCode": 3
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0A7EC8",
+          "sounds": ["./assets/sounds/water_drop.wav"]
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Teslimat için konum izni gerekli.",
+          "locationAlwaysPermission": "Arka planda konum takibi için izin gerekli.",
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "26f8a551-36a9-4a20-9718-9b3dcf56685e"
+      },
+      "router": {}
+    },
+    "owner": "altun07",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/26f8a551-36a9-4a20-9718-9b3dcf56685e"
+    }
+  }
+}
