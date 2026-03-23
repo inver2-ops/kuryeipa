@@ -23,8 +23,9 @@ jobs:
           npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # simulator: false olduğu için EAS doğrudan bir .ipa dosyası üretecek
-        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./kurye_test.ipa"
+        # --skip-credentials ekleyerek Apple hesabı sormasını engelliyoruz
+        # Platformu ve cihaz mimarisini koruyarak sadece derleme yapıyoruz
+        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./kurye_test.ipa" --skip-credentials
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NPM_CONFIG_LEGACY_PEER_DEPS: true
@@ -32,6 +33,6 @@ jobs:
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Kurye-Gercek-Cihaz-IPA
+          name: Kurye-iOS-Gercek-Cihaz
           path: kurye_test.ipa
           retention-days: 1
