@@ -18,28 +18,27 @@ jobs:
         run: npm install -g eas-cli
 
       - name: Fix and Install Dependencies
-        # Lock dosyasını silip legacy-peer-deps ile uyumsuzlukları aşarak kuruyoruz
         run: |
           rm -f package-lock.json
           npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # NPM_CONFIG ile EAS'ın içindeki gizli npm süreçlerini de kontrol altına alıyoruz
-        run: npx eas-cli build --platform ios --local --profile preview --non-interactive
+        # Çıktıyı zorla ana dizine 'inver_kurye.app' adıyla alıyoruz
+        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./inver_kurye.app"
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NPM_CONFIG_LEGACY_PEER_DEPS: true
 
-      - name: Locate and Move App
-        # EAS'ın derin klasörlere attığı .app dosyasını bulup 'output' klasörüne topluyoruz
+      - name: Convert to IPA
+        # Manuel yaptığın Payload/Zip işlemini burada otomatik yapıyoruz
         run: |
-          mkdir -p output
-          find . -name "*.app" -exec cp -R {} output/ \;
+          mkdir -p Payload
+          cp -R ./inver_kurye.app Payload/
+          zip -r kurye_test.ipa Payload/
 
       - name: Upload IPA Artifact
-        # Artık 'output' klasörü içinde olduğu için GitHub dosyayı kesinlikle görecek
         uses: actions/upload-artifact@v4
         with:
-          name: kurye-app-build
-          path: output/*.app
+          name: Kurye-iOS-Yukleme-Dosyasi
+          path: kurye_test.ipa
           retention-days: 1
