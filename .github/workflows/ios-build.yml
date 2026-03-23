@@ -13,18 +13,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Setup EAS
         run: npm install -g eas-cli
 
-      - name: Install dependencies
-        # Burada kütüphaneleri manuel ve zorla yüklüyoruz
-        run: npm install --legacy-peer-deps
+      - name: Fix and Install dependencies
+        # Lock dosyasını siliyoruz ki sürüm çakışması yapmasın, sonra sıfırdan kuruyoruz
+        run: |
+          rm -f package-lock.json
+          npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # --skip-install ekleyerek EAS'ın tekrar 'npm ci' yapıp hata vermesini engelliyoruz
-        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --skip-install
+        # simulator: true ayarını zaten eas.json'da yapmıştık, o yüzden sertifika sormayacak
+        run: npx eas-cli build --platform ios --local --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
