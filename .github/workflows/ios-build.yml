@@ -17,20 +17,15 @@ jobs:
       - name: Setup EAS
         run: npm install -g eas-cli
 
-      - name: Fix and Install dependencies
-        # Lock dosyasını siliyoruz ki sürüm çakışması yapmasın, sonra sıfırdan kuruyoruz
+      - name: Fix and Install
         run: |
+          rm -rf node_modules
           rm -f package-lock.json
           npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # simulator: true ayarını zaten eas.json'da yapmıştık, o yüzden sertifika sormayacak
+        # EAS'ın npm ci yapmasını engellemek için ortam değişkeni ekledik
         run: npx eas-cli build --platform ios --local --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Upload IPA Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-app-ipa
-          path: build/*.app
+          NPM_CONFIG_LEGACY_PEER_DEPS: true
