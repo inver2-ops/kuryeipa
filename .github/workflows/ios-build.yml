@@ -23,22 +23,15 @@ jobs:
           npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # Çıktıyı zorla ana dizine 'inver_kurye.app' adıyla alıyoruz
-        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./inver_kurye.app"
+        # simulator: false olduğu için EAS doğrudan bir .ipa dosyası üretecek
+        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./kurye_test.ipa"
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NPM_CONFIG_LEGACY_PEER_DEPS: true
 
-      - name: Convert to IPA
-        # Manuel yaptığın Payload/Zip işlemini burada otomatik yapıyoruz
-        run: |
-          mkdir -p Payload
-          cp -R ./inver_kurye.app Payload/
-          zip -r kurye_test.ipa Payload/
-
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Kurye-iOS-Yukleme-Dosyasi
+          name: Kurye-Gercek-Cihaz-IPA
           path: kurye_test.ipa
           retention-days: 1
