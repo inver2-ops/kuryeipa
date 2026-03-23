@@ -12,22 +12,24 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Sürümü 20 yaptık
+          node-version: 20
           cache: 'npm'
 
       - name: Setup EAS
         run: npm install -g eas-cli
 
       - name: Install dependencies
-        run: npm install
+        # --legacy-peer-deps ekledik, böylece React sürüm hatalarını atlayacak
+        run: npm install --legacy-peer-deps
 
       - name: Build Local IPA
+        # Bu komut Apple sertifikası sormadan simülatör build alacak
         run: npx eas-cli build --platform ios --local --profile preview --non-interactive
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }} # Gizli anahtarını burada kullandık
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: my-app-ipa
-          path: build/*.ipa
+          path: build/*.app # Simülatör build olduğu için .app çıktısı verir
