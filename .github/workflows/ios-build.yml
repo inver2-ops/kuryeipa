@@ -19,12 +19,12 @@ jobs:
         run: npm install -g eas-cli
 
       - name: Install dependencies
-        # 'npm ci' yerine 'npm install' kullanarak lock dosyası hatasını aşıyoruz
+        # Burada kütüphaneleri manuel ve zorla yüklüyoruz
         run: npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # Sertifika hatasını 'simulator: true' (eas.json'da) ile aşmıştık
-        run: npx eas-cli build --platform ios --local --profile preview --non-interactive
+        # --skip-install ekleyerek EAS'ın tekrar 'npm ci' yapıp hata vermesini engelliyoruz
+        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --skip-install
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
