@@ -19,11 +19,11 @@ jobs:
         run: npm install -g eas-cli
 
       - name: Install dependencies
-        # --legacy-peer-deps ekledik, böylece React sürüm hatalarını atlayacak
+        # 'npm ci' yerine 'npm install' kullanarak lock dosyası hatasını aşıyoruz
         run: npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # Bu komut Apple sertifikası sormadan simülatör build alacak
+        # Sertifika hatasını 'simulator: true' (eas.json'da) ile aşmıştık
         run: npx eas-cli build --platform ios --local --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: my-app-ipa
-          path: build/*.app # Simülatör build olduğu için .app çıktısı verir
+          path: build/*.app
