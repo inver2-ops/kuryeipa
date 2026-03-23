@@ -1,17 +1,45 @@
-- name: Build Local IPA
+name: Build iOS IPA
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup EAS
+        run: npm install -g eas-cli
+
+      - name: Fix and Install Dependencies
+        # Lock dosyasını silip legacy-peer-deps ile uyumsuzlukları aşarak kuruyoruz
+        run: |
+          rm -f package-lock.json
+          npm install --legacy-peer-deps
+
+      - name: Build Local IPA
+        # NPM_CONFIG ile EAS'ın içindeki gizli npm süreçlerini de kontrol altına alıyoruz
         run: npx eas-cli build --platform ios --local --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NPM_CONFIG_LEGACY_PEER_DEPS: true
 
-      # Build edilen dosyayı bulup ana dizine taşıyoruz ki GitHub görebilsin
       - name: Locate and Move App
+        # EAS'ın derin klasörlere attığı .app dosyasını bulup 'output' klasörüne topluyoruz
         run: |
           mkdir -p output
           find . -name "*.app" -exec cp -R {} output/ \;
 
       - name: Upload IPA Artifact
+        # Artık 'output' klasörü içinde olduğu için GitHub dosyayı kesinlikle görecek
         uses: actions/upload-artifact@v4
         with:
-          name: my-app-ipa
+          name: kurye-app-build
           path: output/*.app
+          retention-days: 1
