@@ -17,28 +17,26 @@ jobs:
       - name: Setup EAS
         run: npm install -g eas-cli
 
-      - name: Fix and Install Dependencies
+      - name: Fix and Install
         run: |
           rm -f package-lock.json
           npm install --legacy-peer-deps
 
       - name: Build Local IPA
-        # simulator: true olduğu için sertifika istemez, YEŞİL yanar.
-        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./inver_kurye.app"
+        # Burası ana uygulama için 'preview' profilini kullanır
+        run: npx eas-cli build --platform ios --local --profile preview --non-interactive --output="./INVERWater.app"
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NPM_CONFIG_LEGACY_PEER_DEPS: true
 
-      - name: Create Valid IPA
-        # Çıkan .app klasörünü Payload içine koyup .ipa yapıyoruz
+      - name: Create IPA
         run: |
           mkdir -p Payload
-          cp -R ./inver_kurye.app Payload/
-          zip -r kurye_test.ipa Payload/
+          cp -R ./INVERWater.app Payload/
+          zip -r INVERWater.ipa Payload/
 
-      - name: Upload IPA Artifact
+      - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Kurye-Test-Paketi
-          path: kurye_test.ipa
-          retention-days: 1
+          name: INVERWater-iOS-Paketi
+          path: INVERWater.ipa
